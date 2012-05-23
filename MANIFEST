@@ -1,0 +1,14 @@
+Build.PL
+Changes
+lib/Writeat.pm
+lib/Writeat/AUTHOR.pm
+lib/Writeat/CHANGES.pm
+lib/Writeat/To.pm
+lib/Writeat/To/DocBook.pm
+Makefile.PL
+MANIFEST
+README
+scripts/writeat
+t/01.bookinfo.t
+META.yml
+META.json
