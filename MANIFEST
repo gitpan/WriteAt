@@ -1,10 +1,10 @@
 Build.PL
 Changes
-lib/Writeat.pm
-lib/Writeat/AUTHOR.pm
-lib/Writeat/CHANGES.pm
-lib/Writeat/To.pm
-lib/Writeat/To/DocBook.pm
+lib/WriteAt.pm
+lib/WriteAt/AUTHOR.pm
+lib/WriteAt/CHANGES.pm
+lib/WriteAt/To.pm
+lib/WriteAt/To/DocBook.pm
 Makefile.PL
 MANIFEST
 README

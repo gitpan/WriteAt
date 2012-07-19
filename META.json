@@ -4,7 +4,7 @@
       "Zahatski Aliaksandr zag@cpan.org"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.120351",
+   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120351",
    "license" : [
       "perl_5"
    ],
@@ -12,47 +12,47 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "Writeat",
+   "name" : "WriteAt",
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "Module::Build" : "0.4"
          }
       },
       "runtime" : {
          "requires" : {
-            "Perl6::Pod" : "0.54",
-            "Perl6::Pod::Lib" : "0.07",
+            "Perl6::Pod" : "0.55",
+            "Perl6::Pod::Lib" : "0.11",
             "Regexp::Grammars" : "1.015"
          }
       }
    },
    "provides" : {
-      "Writeat" : {
-         "file" : "lib/Writeat.pm",
-         "version" : "0.01"
+      "WriteAt" : {
+         "file" : "lib/WriteAt.pm",
+         "version" : "0.02"
       },
-      "Writeat::AUTHOR" : {
-         "file" : "lib/Writeat/AUTHOR.pm",
+      "WriteAt::AUTHOR" : {
+         "file" : "lib/WriteAt/AUTHOR.pm",
          "version" : 0
       },
-      "Writeat::CHANGES" : {
-         "file" : "lib/Writeat/CHANGES.pm",
+      "WriteAt::CHANGES" : {
+         "file" : "lib/WriteAt/CHANGES.pm",
          "version" : 0
       },
-      "Writeat::To" : {
-         "file" : "lib/Writeat/To.pm",
+      "WriteAt::To" : {
+         "file" : "lib/WriteAt/To.pm",
          "version" : 0
       },
-      "Writeat::To::DocBook" : {
-         "file" : "lib/Writeat/To/DocBook.pm",
+      "WriteAt::To::DocBook" : {
+         "file" : "lib/WriteAt/To/DocBook.pm",
          "version" : 0
       }
    },
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=Writeat"
+         "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=WriteAt"
       },
       "license" : [
          "http://dev.perl.org/licenses/"
@@ -61,5 +61,5 @@
          "url" : "git://github.com/zag/writeat.git"
       }
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }
