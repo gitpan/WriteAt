@@ -64,14 +64,14 @@ Grab template:
         cd writeat-tmpl-firstbook
         make
 
-Point your web brouser to С<index.html> file in C<work> directory.
+Point your web brouser to C<index.html> file in C<work> directory.
 
 =cut
 
 use strict;
 use warnings;
 use v5.10;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 use WriteAt::CHANGES;
 use WriteAt::AUTHOR;
 use WriteAt::To::DocBook;
@@ -116,9 +116,14 @@ sub get_book_info_blocks {
         #convert =Include $n to DOM if To::* passed
         if ( $to && $n->name eq 'Include' ) {
             $n = $to->_make_dom_node($n);
+
+            #set current path
+            $to->context->custom->{src} = $n->{PATH};
+
         }
         if ( my $converted_block_name = &get_name_from_locale( $n->name ) ) {
-            push @{$res->{$converted_block_name}}, $n;
+            push @{ $res->{$converted_block_name} }, $n;
+
             # overwrite original name
             $n->{name} = $converted_block_name;
         }
@@ -130,7 +135,169 @@ sub get_book_info_blocks {
     \@tree;
 }
 
+=pod
+
+ {
+    =tagname
+    =childs
+ }
+
+=cut
+
+sub get_childs {
+    my ( $name, $level, $tree ) = @_;
+    my @childs = ();
+    while ( my $current = shift @$tree ) {
+        my $cname  = $current->name;
+        my $clevel = $current->{level};
+
+        #set level 0 for semantic blocks
+        $clevel = 0 if $cname eq uc($cname);
+
+        if (
+            ( defined($clevel) and ( $clevel < $level ) )
+            || (   ( $cname eq $name )
+                && ( $level == $clevel ) )
+
+           )
+        {
+            unshift @$tree, $current;
+            return @childs;
+        }
+        push @childs, $current;
+    }
+    return @childs;
+}
+
+=head2 make_levels ( blockname, level, $parsed_tree )
+
+Make tree using levels
+
+    my $tree = Perl6::Pod::Utl::parse_pod( $t, default_pod => 1 )
+        || die "Can't parse ";
+    my ($root) = @$tree;
+    my $tree1 = $tree;
+    if ( $root->name eq 'pod' ) {
+        $tree1 = $root->childs;
+    }
+    
+    my $levels = &WriteAt::make_levels( "CHAPTER", 0, $tree1 );
+
+    return 
+
+    [
+        {
+            node => {ref to object},
+            childs => [ array of childs]
+        
+        },
+        ...
+    ]
+=cut
+
+sub make_levels {
+    my ( $name, $level, $tree ) = @_;
+
+    #check if root node pod
+    # call for childs
+    if ( my $first = $tree->[0] ) {
+        return &make_levels( $name, $level, $first->childs )
+          if $first->name eq 'pod';
+    }
+
+    my @res = ();
+    while ( my $current = shift @$tree ) {
+        next unless $current->name eq $name;
+        my $clevel = $current->{level};
+        my $cname  = $current->name;
+
+        #set level 0 for semantic blocks
+        $clevel = 0 if $cname eq uc($cname);
+
+        if ( defined($clevel) ) {
+            next unless $clevel == $level;
+        }
+        push @res,
+          {
+            node   => $current,
+            childs => [ &get_childs( $name, $level, $tree ) ]
+          };
+    }
+    return \@res;
+}
+
+=head2 get_text(node1, node2, ...)
+
+return string of all childs texts nodes
+
+=cut
+
+sub get_text {
+    my @nodes = @_;
+    my $txt   = '';
+    foreach my $n (@nodes) {
+        if ( $n->{type} eq 'text' ) {
+            $txt .= join "" => @{ $n->childs };
+        }
+        else {
+            $txt .= &get_text( @{ $n->childs } );
+        }
+    }
+    chomp($txt);
+    return $txt;
+}
+
+=head2 rus2lat
+
+Translit rus to lat ( gost 7.79-2000  )
+
+    rus2lat('russian text');
+
+=cut
+
+sub rus2lat($) {
+    my %hs = (
+        'аА' => 'a',
+        'бБ' => 'b',
+        'вВ' => 'v',
+        'гГ' => 'g',
+        'дД' => 'd',
+        'еЕ' => 'e',
+        'ёЁ' => 'jo',
+        'жЖ' => 'zh',
+        'зЗ' => 'z',
+        'иИ' => 'i',
+        'йЙ' => 'j',
+        'кК' => 'k',
+        'лЛ' => 'l',
+        'мМ' => 'm',
+        'нН' => 'n',
+        'оО' => 'o',
+        'пП' => 'p',
+        'рР' => 'r',
+        'сС' => 's',
+        'тТ' => 't',
+        'уУ' => 'u',
+        'фФ' => 'f',
+        'хХ' => 'kh',
+        'цЦ' => 'c',
+        'чЧ' => 'ch',
+        'шШ' => 'sh',
+        'щЩ' => 'shh',
+        'ъЪ' => '',
+        'ыЫ' => 'y',
+        'ьЬ' => '',
+        'эЭ' => 'eh',
+        'юЮ' => 'ju',
+        'яЯ' => 'ja'
+    );
+    my $z = shift;
+    $z =~ s|[$_]|$hs{$_}|gi for keys %hs;
+    $z;
+}
+
 =head1 METHODS
+
 =cut
 
 sub new {

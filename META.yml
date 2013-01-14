@@ -4,9 +4,9 @@ author:
   - 'Zahatski Aliaksandr zag@cpan.org'
 build_requires: {}
 configure_requires:
-  Module::Build: 0.4
+  Module::Build: 0.38
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4, CPAN::Meta::Converter version 2.120351'
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110440'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -15,7 +15,7 @@ name: WriteAt
 provides:
   WriteAt:
     file: lib/WriteAt.pm
-    version: 0.02
+    version: 0.03
   WriteAt::AUTHOR:
     file: lib/WriteAt/AUTHOR.pm
     version: 0
@@ -25,15 +25,22 @@ provides:
   WriteAt::To:
     file: lib/WriteAt/To.pm
     version: 0
+  WriteAt::To::Atom:
+    file: lib/WriteAt/To/Atom.pm
+    version: 0
   WriteAt::To::DocBook:
     file: lib/WriteAt/To/DocBook.pm
     version: 0
+  WriteAt::To::Latex:
+    file: lib/WriteAt/To/Latex.pm
+    version: 0
 requires:
-  Perl6::Pod: 0.55
+  DateTime::Format::W3CDTF: 0
+  Perl6::Pod: 0.57
   Perl6::Pod::Lib: 0.11
-  Regexp::Grammars: 1.015
+  Regexp::Grammars: 1.021
 resources:
   bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=WriteAt
   license: http://dev.perl.org/licenses/
   repository: git://github.com/zag/writeat.git
-version: 0.02
+version: 0.03

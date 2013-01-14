@@ -1,5 +1,10 @@
 Revision history for Perl extension WriteAt.
 
+0.03
+    + convert books to atom feed
+    + add latex support
+    + util atom2file 
+    + track path for =Include
 0.02
     + rename to WriteAt,
     + add russian SEMANTIC blocks

@@ -4,7 +4,7 @@
       "Zahatski Aliaksandr zag@cpan.org"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120351",
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.110440",
    "license" : [
       "perl_5"
    ],
@@ -16,21 +16,22 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.4"
+            "Module::Build" : "0.38"
          }
       },
       "runtime" : {
          "requires" : {
-            "Perl6::Pod" : "0.55",
+            "DateTime::Format::W3CDTF" : 0,
+            "Perl6::Pod" : "0.57",
             "Perl6::Pod::Lib" : "0.11",
-            "Regexp::Grammars" : "1.015"
+            "Regexp::Grammars" : "1.021"
          }
       }
    },
    "provides" : {
       "WriteAt" : {
          "file" : "lib/WriteAt.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       },
       "WriteAt::AUTHOR" : {
          "file" : "lib/WriteAt/AUTHOR.pm",
@@ -44,8 +45,16 @@
          "file" : "lib/WriteAt/To.pm",
          "version" : 0
       },
+      "WriteAt::To::Atom" : {
+         "file" : "lib/WriteAt/To/Atom.pm",
+         "version" : 0
+      },
       "WriteAt::To::DocBook" : {
          "file" : "lib/WriteAt/To/DocBook.pm",
+         "version" : 0
+      },
+      "WriteAt::To::Latex" : {
+         "file" : "lib/WriteAt/To/Latex.pm",
          "version" : 0
       }
    },
@@ -58,8 +67,9 @@
          "http://dev.perl.org/licenses/"
       ],
       "repository" : {
+         "type" : "git",
          "url" : "git://github.com/zag/writeat.git"
       }
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }
