@@ -13,6 +13,7 @@ README
 scripts/atom2file
 scripts/writeat
 t/01.bookinfo.t
+t/02.published.t
 t/exportatom.pod6
 META.yml
 META.json

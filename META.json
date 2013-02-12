@@ -24,14 +24,15 @@
             "DateTime::Format::W3CDTF" : 0,
             "Perl6::Pod" : "0.57",
             "Perl6::Pod::Lib" : "0.11",
-            "Regexp::Grammars" : "1.021"
+            "Regexp::Grammars" : "1.021",
+            "Template" : "2.24"
          }
       }
    },
    "provides" : {
       "WriteAt" : {
          "file" : "lib/WriteAt.pm",
-         "version" : "0.03"
+         "version" : "0.04"
       },
       "WriteAt::AUTHOR" : {
          "file" : "lib/WriteAt/AUTHOR.pm",
@@ -56,6 +57,10 @@
       "WriteAt::To::Latex" : {
          "file" : "lib/WriteAt/To/Latex.pm",
          "version" : 0
+      },
+      "WriteAt::UtilCTX" : {
+         "file" : "lib/WriteAt.pm",
+         "version" : 0
       }
    },
    "release_status" : "stable",
@@ -71,5 +76,5 @@
          "url" : "git://github.com/zag/writeat.git"
       }
    },
-   "version" : "0.03"
+   "version" : "0.04"
 }

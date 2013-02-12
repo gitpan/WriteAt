@@ -19,16 +19,18 @@ use constant {
       }
 
 };
-my ( $help, $man, $render_class );
-my ( $type, $lang ) = ( "docbook", 'en' );
+my ( $help, $man, $render_class, $set_date );
+my ( $type, $lang, $enable_published ) = ( "docbook", 'en', 0 );
 my %opt = (
     help   => \$help,
     man    => \$man,
     type   => \$type,
     lang   => \$lang,
-    render => \$render_class
+    render => \$render_class,
+    enable_published=>\$enable_published,
+    set_date =>\$set_date
 );
-GetOptions( \%opt, 'help|?', 'man', 'c=s', "type|t:s", 'lang=s', 'render|r:s' )
+GetOptions( \%opt, 'help|?', 'man', 'set_date=s','enable_published','c=s', "type|t:s", 'lang=s', 'render|r:s' )
   or pod2usage(2);
 pod2usage(1) if $help;
 pod2usage( -exitstatus => 0, -verbose => 2 ) if $man;
@@ -111,38 +113,14 @@ unless ($type) {
 
     my %res;
     $tree = &WriteAt::get_book_info_blocks( $tree, \%res, $r );
-
+    #now filter by publush time if endable
+    if ($enable_published) {
+        my $pub_time = $set_date || &WriteAt::unixtime_to_string(time());
+        $tree = &WriteAt::filter_published($tree, $pub_time);
+    }
     $r->start_write(%res);
-
-    if ( $type eq 'docbook' ) {
-        $r->w->raw('<bookinfo>');
-        for (qw/ TITLE SUBTITLE AUTHOR CHANGES DESCRIPTION /) {
-            my $n = $res{$_} || die "Cant find block =$_";
-
-            #make Document element
-            $r->visit($n);
-        }
-        $r->w->raw('</bookinfo>');
-    }
-    elsif ( $type eq 'latex' ) {
-
-        $r->title_page(%res);
-        $r->w->raw(
-'\tableofcontents{} % auto toc
-\newpage'
-        );
-
-        #    for (qw/ TITLE SUBTITLE AUTHOR CHANGES DESCRIPTION /) {
-        #        my $n = $res{$_} || die "Cant find block =$_";
-        #
-        #        #make Document element
-        #        $r->visit($n);
-        #    }
-    }
-
     $r->write($tree);
     $r->end_write();
-
 }
 
 exit 0;
@@ -152,6 +130,29 @@ exit 0;
   writeat  - process pod6 files
 
 =head1 SYNOPSIS
+
+Minimal book template is:
+
+    =begin pod
+    =TITLE Main title
+    =SUBTITLE mini subtitle
+    =for DESCRIPTION tag:<tag1 tag2>
+    asd asd 
+    =begin CHANGES
+    Dec 09th 2012(v0.1)[zag]   Start
+    =end CHANGES
+    =AUTHOR Alex Zahatski
+    =for CHAPTER
+    Test chapter
+    =for head1 :published<'2013-01-10T09:09:09Z'> :updated<'2013-02-27T10:30:01Z'>
+    = :tag<setup>
+    Begining
+    =head2 Second level
+    
+    The following text ...
+    =end pod
+
+
 
   writeat -type docbook  file.pod6 > file.xml
  
@@ -164,24 +165,25 @@ or
     -help  - print help message
     -man   - print man page
     -type  - output format (docbook, latex, atom)
-    -render,-r - use class for render (option -type ignored)
+    -render,-r - use class for render (option -type ignored) (default: off)
     -lang  - set language ( default: en )
+    -enable_published - filter :publish attributes (default: off)
+    -set_date '2012-11-27T09:39:18Z' - set time to filter published (default: now)
 
     [file] : filename or - for STDIN
 
     [render options]:
      atom:
-            -baseurl http://example.org  - base url for links
-            -default_publish 1 - publish items without 'published' attr
-                                 default: 0.
-            -set_date '2012-11-27T09:39:18Z' - set time to filter published
+         -baseurl http://example.org  - base url for links
+         -as_entry head1               - use head1 for atom entry (default =CHAPTER)
 
       atom example:
 
-    writeat -t atom -lang en - \
-        -- -baseurl http://example.org \
-        -default_publish 0 \
-        -set_date '2012-11-27T09:39:18Z' < exportatom.pod6
+    writeat -t atom -lang en \
+        -enable_published \
+        -set_date '2012-11-27T09:39:18Z' \
+        - \
+        -- -level head1 -baseurl http://example.org  < exportatom.pod6
 
 
 =head1 OPTIONS
@@ -208,6 +210,27 @@ use class for render (C<-type> ignored)
 
 =head1 EXAMPLE
 
+Minimal book template is:
+
+    =begin pod
+    =TITLE Main title
+    =SUBTITLE mini subtitle
+    =for DESCRIPTION tag:<tag1 tag2>
+    asd asd 
+    =begin CHANGES
+    Dec 09th 2012(v0.1)[zag]   Start
+    =end CHANGES
+    =AUTHOR Alex Zahatski
+    =for CHAPTER
+    Test chapter
+    =for head1 :published<'2013-01-10T09:09:09Z'> :updated<'2013-02-27T10:30:01Z'>
+    = :tag<setup>
+    Begining
+    =head2 Second level
+    
+    The following text ...
+    =end pod
+
    writeat -type docbook < book.pod6
 
 =head1 AUTHOR
@@ -216,7 +239,7 @@ Zahatski Aliaksandr, E<lt>zahatski@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2012 by Zahatski Aliaksandr
+Copyright 2013 by Zahatski Aliaksandr
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

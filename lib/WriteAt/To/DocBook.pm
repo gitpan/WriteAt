@@ -14,6 +14,7 @@ use utf8;
 
 sub start_write {
     my $self = shift;
+    my %tags = @_;
     my $w    = $self->writer;
     my $dtd  = '';
     for (
@@ -34,6 +35,14 @@ sub start_write {
         "file://${dtd}" []>
 <book lang="$lang">
 H
+    $w->raw('<bookinfo>');
+    for (qw/ TITLE SUBTITLE AUTHOR CHANGES DESCRIPTION /) {
+      my $n = $tags{$_} || die "Cant find block =$_";
+
+       #make Document element
+       $self->visit($n);
+    }
+    $w->raw('</bookinfo>');
 }
 
 sub block_DESCRIPTION {
@@ -72,7 +81,7 @@ use strict;
 sub block_CHAPTER {
     my ( $self, $node ) = @_;
     #close any section
-    $self->switch_head_level(0);
+    $self->switch_head_level(0, 'no_start_next');
     $self->w->raw('</chapter>') if $self->{IN_CHAPTER};
     $self->w->raw('<chapter>') &&  $self->{IN_CHAPTER}++;
     $self->w->raw('<title>')->print($node->childs->[0]->childs->[0])
