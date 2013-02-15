@@ -7,13 +7,13 @@ WriteMakefile
   'PREREQ_PM' => {
                    'DateTime::Format::W3CDTF' => 0,
                    'Perl6::Pod' => '0.57',
-                   'Perl6::Pod::Lib' => '0.11',
+                   'Perl6::Pod::Lib' => '0.12',
                    'Regexp::Grammars' => '1.021',
                    'Template' => '2.24'
                  },
   'INSTALLDIRS' => 'site',
   'EXE_FILES' => [
-                   'acripts/atom2file',
+                   'scripts/atom2file',
                    'scripts/writeat'
                  ],
   'PL_FILES' => {}

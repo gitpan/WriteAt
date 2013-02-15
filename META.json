@@ -23,7 +23,7 @@
          "requires" : {
             "DateTime::Format::W3CDTF" : 0,
             "Perl6::Pod" : "0.57",
-            "Perl6::Pod::Lib" : "0.11",
+            "Perl6::Pod::Lib" : "0.12",
             "Regexp::Grammars" : "1.021",
             "Template" : "2.24"
          }
@@ -32,7 +32,7 @@
    "provides" : {
       "WriteAt" : {
          "file" : "lib/WriteAt.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       },
       "WriteAt::AUTHOR" : {
          "file" : "lib/WriteAt/AUTHOR.pm",
@@ -76,5 +76,5 @@
          "url" : "git://github.com/zag/writeat.git"
       }
    },
-   "version" : "0.04"
+   "version" : "0.05"
 }
